@@ -6,5 +6,4 @@ Flask_wtf
 pytz
 requests
 Flask_SocketIO
-watchdog.observers
-watchdog.events
+watchdog
