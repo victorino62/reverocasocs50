@@ -1,0 +1,26 @@
+10 html tags:
+
+<p>
+<div>
+<li>
+<nav>
+<h1>
+<footer>
+<script>
+<link>
+<video>
+<source>
+<meta>
+
+
+5 CSS
+
+  position
+  top
+  left
+  transform
+  color
+  text-align
+  z-index:
+
+I've used Bootstrap with JavaScript to make a dropdown button over one of my HTML links.

@@ -1,0 +1,302 @@
+/* ============================== */
+/*            FONTE              */
+/* ============================== */
+@font-face {
+  font-family: 'JosyWine';
+  src: url('/static/JosyWine.woff2') format('woff2'),
+       url('/static/JosyWine.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ============================== */
+/*       RESET/BÁSICO            */
+/* ============================== */
+:focus {
+  outline: 0;
+}
+
+/* Remove margem e padding padrão do body/html e define fonte base */
+html, body {
+  font-family: 'JosyWine', sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Impede barras de rolagem */
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================== */
+/*         TIPOGRAFIA            */
+/* ============================== */
+h1 {
+  color: white;
+  text-align: center;
+}
+
+/* Parágrafos */
+p {
+  font-family: 'JosyWine', sans-serif;
+  font-size: 15px; 
+  line-height: 0.5;
+  margin-bottom: 1rem; /* Exemplo de espaçamento entre parágrafos */
+}
+
+/* Links */
+a, a:hover, a:visited, a:focus {
+  color: #fff;
+  text-decoration: underline;
+  outline: 0 !important;
+  outline: none !important;
+}
+
+/* ============================== */
+/*        MENU E NAVEGAÇÃO       */
+/* ============================== */
+
+/* Menu principal */
+.nav > li > a {
+  font-size: 26px;
+  padding: 0;
+  margin: 20 0 0px;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none;
+}
+
+
+/* Mudança de cor quando ativo ou hover */
+.nav > li > a.active,
+.nav > li > a:focus,
+.nav > li > a:hover,
+.home .nav > li > a#home,
+.contact .nav > li > a#contact,
+.tour .nav > li > a#tour,
+.videos .nav > li > a#video {
+  background-color: transparent;
+  text-decoration: underline;
+  color: rgb(255, 193, 93);
+}
+
+/* Sidenav customizado */
+.ff-sidenav {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.ff-sidenav li {
+  display: block;
+  margin-bottom: 10px;
+  padding: 0px 0;
+}
+
+.ff-sidenav li a {
+  text-decoration: none;
+  color: white;
+  padding: 0px;
+  display: block;
+  letter-spacing: 2px;
+}
+
+
+
+.nav.ff-sidenav {
+  width: 80px; /* Desired width */
+  height: 30px; /* Desired height */
+}
+
+/* ============================== */
+/*  LOGO E HEADER ESPECÍFICOS    */
+/* ============================== */
+
+/* Contêiner do logo */
+.logo-container {
+  position: absolute;
+  top: 20%;
+  left: 3%;
+  transform: translate(0%, -50%);
+}
+
+/* Estilo da imagem do logo */
+.logo-img {
+  width: 200px; 
+  height: auto; 
+}
+
+/* Título do header com link */
+.ff-header h1 a,
+.ff-header h1 a:hover,
+.ff-header h1 a:focus,
+.ff-header h1 a:active,
+.ff-header h1 a:visited {
+  font-size: 40px;
+  margin: 100px 0 60px 0;
+  display: block;
+  text-decoration: none;
+}
+
+/* ============================== */
+/*      BOTÕES E TOGGLE MENU     */
+/* ============================== */
+
+.navbar-toggle {
+  border-color: rgba(255, 189, 48, 0.5);
+  background: rgba(245, 245, 245, 0.1);
+  background-repeat: no-repeat;
+  background-position: left top;
+}
+
+.navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+
+.btn-default {
+  color: #fff;
+  background-color: transparent;
+  border-color: #fff;
+  text-decoration: none;
+  margin: 20px auto;
+  border-radius: 0;
+}
+
+.btn.btn-default.btn-lg,
+a.btn.btn-default.btn-lg {
+  color: #fff;
+}
+
+.btn.btn-default.btn-lg:hover,
+a.btn.btn-default.btn-lg:hover {
+  color: #000;
+}
+
+.navbar-collapse {
+  border-top: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+/* Newsletter */
+.newsletter .navbar-form {
+  margin-top: 0;
+  padding: 0;
+}
+
+/* ============================== */
+/*        VIDEO DE BACKGROUND    */
+/* ============================== */
+
+/* Contêiner principal do vídeo */
+.video-background-holder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Coloca o vídeo atrás de todo o conteúdo */
+  overflow: hidden; /* Esconde partes do vídeo que excedem os limites */
+}
+
+/* Ajusta o contêiner do vídeo */
+.video-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Configura o vídeo para preencher toda a tela */
+#video_bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; /* Faz o vídeo cobrir a tela, mantendo proporções */
+}
+
+/* ============================== */
+/*         MENU OVERLAY          */
+/* ============================== */
+.menu-overlay {
+  position: absolute; 
+  top: 32%;
+  left: 6%;
+  color: white;
+  text-align: left;
+  z-index: 10; 
+}
+
+.menu-overlay h1 {
+  font-size: 3rem; 
+  margin-bottom: 1rem;
+}
+
+.menu-overlay a {
+  margin: 0.5rem; 
+}
+
+/* ============================== */
+/*           SOUNDCLOUD          */
+/* ============================== */
+.soundcloud {
+  position: absolute;
+  top: 50%;
+  left: 6%;
+  width: 100%;
+  max-width: 290px;
+  height: 68px;
+  margin: 0 auto;
+  padding: 0;
+  background-color: #9f3a3a;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(144, 29, 29, 0.1);
+  overflow: hidden;
+}
+
+.soundcloud iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.soundcloud-links {
+  display: none;
+}
+
+/* ============================== */
+/*          SEÇÕES GERAIS        */
+/* ============================== */
+
+/* Exemplo de classe de contato */
+.contato {
+  background-color: lightblue;
+}
+
+/* Rodapé */
+.rodapé {
+  color: white;
+}
+
+/* Main ocupar espaço restante */
+main {
+  flex: 1; 
+}
+
+/* ============================== */
+/*      MEDIA QUERIES            */
+/* ============================== */
+
+/* Ajusta a largura do container em telas grandes */
+@media (min-width: 1200px) {
+  .container {
+    width: 800px;
+  }
+}
