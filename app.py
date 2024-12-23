@@ -1,28 +1,38 @@
 import os
+import time
+import sqlite3
 
-from cs50 import SQL
+from forms import ContactForm
+from flask_mail import Mail, Message
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
-from werkzeug.security import check_password_hash, generate_password_hash
 from flask_socketio import SocketIO
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-import time
-import sqlite3
+
 
 from helpers import apology, login_required
 
 # Configure application
 app = Flask(__name__)
 socketio = SocketIO(app)
+app.secret_key = 'revercs50'
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Configure CS50 Library to use SQLite database
-# db = SQL("sqlite:///finance.db")
+# Configuração do Flask-Mail
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'seu_email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'sua_senha'
+mail = Mail(app)
 
 
 @app.after_request
@@ -41,132 +51,42 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/contact")
+@app.route("/music")
 #@login_required
-def contact():
-    """Contato"""
-    return render_template("contact.html")
+def music():
+    """music"""
+    return render_template("music.html")
 
-# @app.route("/login", methods=["GET", "POST"])
-# def login():
-    """Log user in"""
-
-    # Forget any user_id
-    session.clear()
-
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
-        # Ensure username was submitted
-        if not request.form.get("username"):
-            return apology("must provide username", 400)
-
-        # Ensure password was submitted
-        elif not request.form.get("password"):
-            return apology("must provide password", 400)
-
-        # Query database for username
-        rows = db.execute(
-            "SELECT * FROM users WHERE username = ?", request.form.get("username")
-        )
-
-        # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(
-            rows[0]["hash"], request.form.get("password")
-        ):
-            return apology("invalid username and/or password", 400)
-
-        # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
-
-        # Redirect user to home page
-        return redirect("/")
-
-    # User reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("login.html")
+@app.route('/contato', methods=['GET', 'POST'])
+def contato():
+    form = ContactForm()
+    if form.validate_on_submit():
+        # Processar o formulário aqui (ex: enviar e-mail ou salvar no banco)
+        flash('Mensagem enviada com sucesso!', 'success')
+        return redirect('/contato')
+    return render_template('contato.html', form=form)
 
 
-# @app.route("/logout")
-# def logout():
-    """Log user out"""
+@app.route('/newsletter', methods=['POST'])
+def newsletter():
+    email = request.form.get('email')
+    with sqlite3.connect('newsletter.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS subscribers (id INTEGER PRIMARY KEY, email TEXT)")
+        cursor.execute("INSERT INTO subscribers (email) VALUES (?)", (email,))
+        conn.commit()
 
-    # Forget any user_id
-    session.clear()
-
-    # Redirect user to login form
-    return redirect("/")
-
-
-#@app.route("/register", methods=["GET", "POST"])
-#def register():
-    """Register user"""
-
-    # Forget any user_id
-    session.clear()
-
-    # User reached route via POST (as by submitting a form via POST)
-    if request.method == "POST":
-        # Ensure username was submitted
-        if not request.form.get("username"):
-            return apology("must provide username", 400)
-
-        # Ensure password was submitted
-        elif not request.form.get("password"):
-            return apology("must provide password", 400)
-
-        # Ensure password is the same
-        elif request.form.get("password") != request.form.get("confirmation"):
-            return apology("passwords do not match", 400)
-
-        # Check if username already exists
-        rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          username=request.form.get("username"))
-        if len(rows) > 0:
-            return apology("username already exists", 400)
-
-        # Hash the password
-        hashed_password = generate_password_hash(request.form.get("password"))
-
-        # Insert the new user into the database
-        db.execute("INSERT INTO users (username, hash) VALUES (:username, :hash)",
-                   username=request.form.get("username"), hash=hashed_password)
-
-        # Redirect user to home page
-        return redirect("/")
-
-    # User reached route via GET (as by clicking a link or via redirect)
-    else:
-        return render_template("register.html")
+    flash('Obrigado por se inscrever na nossa newsletter!', 'success')
+    return redirect(url_for('index'))
 
 
-
-
-# @app.route("/change_password", methods=["GET", "POST"])
-# @login_required
-# def change_password():
-    if request.method == "POST":
-        # Get the current and new passwords from the form
-        current_password = request.form.get("current_password")
-        new_password = request.form.get("new_password")
-        confirmation = request.form.get("confirmation")
-
-        # Validate the current password
-        user = db.execute("SELECT * FROM users WHERE id = :user_id", user_id=session["user_id"])
-        if not check_password_hash(user[0]["hash"], current_password):
-            return apology("Invalid current password")
-
-        # Ensure new password and confirmation match
-        if new_password != confirmation:
-            return apology("Passwords do not match")
-
-        # Update the password in the database
-        db.execute("UPDATE users SET hash = :hash WHERE id = :user_id",
-                   hash=generate_password_hash(new_password), user_id=session["user_id"])
-
-        return redirect(url_for("index", action="Password Changed"))
-
-    else:
-        return render_template("change_password.html")
+@app.route('/admin/newsletter')
+def admin_newsletter():
+    with sqlite3.connect('newsletter.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT email FROM subscribers")
+        emails = cursor.fetchall()
+    return render_template('admin_newsletter.html', emails=emails)
 
 
 
@@ -174,6 +94,7 @@ class ChangeHandler(FileSystemEventHandler):
     def on_modified(self, event):
         if event.src_path.endswith('.css') or event.src_path.endswith('.html') or event.src_path.endswith('.js'):
             socketio.emit('file_changed')
+
 
 
 

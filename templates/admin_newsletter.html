@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+
+<html lang="pt-br">
+<head>
+    <title>Admin - Newsletter</title>
+</head>
+<body>
+    <h1>Lista de Inscritos na Newsletter</h1>
+    <ul>
+        {% for email in emails %}
+            <li>{{ email[0] }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

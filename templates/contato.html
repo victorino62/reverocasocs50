@@ -1,0 +1,80 @@
+
+{% extends "layout.html" %}
+
+{% block main %}
+
+<!-- <div class="video-overlay-contato">
+    <h1 class="display-4">Contato</h1> 
+</div> -->
+
+<div class="video-background-holder">
+        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop" id="video_bg">
+            <source src="/static/capa_site.mp4" type="video/mp4">
+        </video>
+    </div>
+</div>
+
+
+
+<div class="menu-overlay-contato">
+    <nav class="ff-sidebar">
+        <ul class="nav ff-sidenav">
+            <li> <a href="{{ url_for('index') }}" id="home">Home</a></li>
+        </ul>
+    </nav> 
+</div>
+
+<p></p>
+
+<div class="contato-email">
+  <h2>Entre em Contato</h2>
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.name.label(class="form-label") }}
+      {{ form.name(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.email.label(class="form-label") }}
+      {{ form.email(class="form-control") }}
+    </div>
+    <div class="mb-3">
+      {{ form.message.label(class="form-label") }}
+      {{ form.message(class="form-control", rows=4) }}
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+  </form>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+
+<p></p>
+
+<!-- newsletter -->
+
+<div class="contato-news">
+  <form method="POST" action="/newsletter">
+    <label for="email">Inscreva-se na nossa newsletter:</label>
+    <input type="email" name="email" id="email" required>
+    <button type="submit">Inscrever</button>
+  </form>
+</div>
+
+<!-- Ícone flutuante do WhatsApp -->
+<a href="https://wa.me/5551999561111" class="whatsapp-float" target="_blank">
+  <div class="whatsapp-icon" id="whatsappIcon">
+      
+  </div>
+</a>
+
+
+
+
+{% endblock %}
+

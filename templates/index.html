@@ -14,21 +14,21 @@
 <div class="menu-overlay">
     <nav class="ff-sidebar">
         <ul class="nav ff-sidenav">
-            <li> <a href="/homepage/index.html" id="home">Home</a></li>
-            <li> <a href="/homepage/music.html" id="music">Music</a></li>
-            <li> <a href="/homepage/agenda.html" id="tour">Agenda</a></li>
+            <li> <a href="{{ url_for('index') }}" id="home">Home</a></li>
+            <li> <a href="{{ url_for('music') }}" id="music">Música</a></li>
+            <!-- <li> <a href="/homepage/agenda.html" id="tour">Agenda</a></li> -->
             <!-- <li> <a href="/video" id="video">Video</a></li> -->
-            <li> <a href="{{ url_for('contact') }}" id="contact">Contato</a> </li>
+            <li> <a href="{{ url_for('contato') }}" id="contato">Contato</a> </li>
         </ul>
     </nav> 
 </div>
 
 <!-- Player do SoundCloud -->
 <div class="soundcloud">
-    <iframe width="100%" height="50" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/641339502&color=%23ca9060&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"></iframe>
+    <iframe width="100%" height="40" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1989676807&color=%23ca9060&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"></iframe>
     <div class="soundcloud-links">
-        <a href="https://soundcloud.com/victorinomusica" title="Victorino" target="_blank" style="color: #cccccc; text-decoration: none;">Victorino</a> ·
-        <a href="https://soundcloud.com/victorinomusica/universo-victorinosilva-victorino-projeto-reverso" title="Universo Victorino(Silva) - Victorino - Projeto Reverso" target="_blank" style="color: #ffffff; text-decoration: none;">Universo Victorino(Silva) - Victorino - Projeto Reverso</a>
+        <a href="https://soundcloud.com/victorinomusica" title="Victorino" target="_blank" style="color: #cccccc; text-decoration: none;">Victorino</a>
+        <a href="https://soundcloud.com/victorinomusica/rever-ocaso-o-rio-da-minha-aldeia" title="Rever Ocaso _ o rio da minha aldeia" target="_blank" style="color: #cccccc; text-decoration: none;">Rever Ocaso _ o rio da minha aldeia</a>
     </div>
 </div>
 
@@ -37,21 +37,41 @@
 </div>
 
 
-<!-- Conteúdo sobreposto
-<div class="video-overlay">
-    <h1 class="display-4">Rever Ocaso</h1> 
-</div> -->
+<!-- Ícone flutuante do WhatsApp -->
+<a href="https://wa.me/5551999561111" class="whatsapp-float" target="_blank">
+    <div class="whatsapp-icon" id="whatsappIcon">
+        
+    </div>
+</a>
 
-          <!-- Script para recarregamento automático -->
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
-          <script>
-              var socket = io();
-              socket.on('connect', function() {
-                  console.log('Connected');
-              });
-              socket.on('file_changed', function() {
-                  location.reload();
-              });
-          </script>
+
+<!-- Script para recarregamento automático -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
+<script>
+    var socket = io();
+    socket.on('connect', function() {
+        console.log('Connected');
+    });
+    socket.on('file_changed', function() {
+        location.reload();
+    });
+</script>
+
+<!-- Script para glow whatsapp -->
+<script>
+    // Executa a função a cada 5 segundos
+    setInterval(() => {
+      const icon = document.getElementById('whatsappIcon');
+  
+      // Adiciona a classe que tem a animação
+      icon.classList.add('glowing');
+  
+      // Remove a classe depois de 1s (ou o tempo total da animação)
+      setTimeout(() => {
+        icon.classList.remove('glowing');
+      }, 2000);
+  
+    }, 5000);
+  </script>
 
 {% endblock %}
