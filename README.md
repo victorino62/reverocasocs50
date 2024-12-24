@@ -2,11 +2,7 @@
 #### Video Demo:  (https://youtu.be/AwPYa7-3_gc)
 #### Description:
 
-Here’s an expanded version of the README that contains more details about the website, its purpose, and functionality, reaching closer to 800 words:
 
----
-
-# **Rever Ocaso - Web Application**
 
 **Rever Ocaso** is a unique artistic project that merges music, technology, and audience interaction. This repository contains the web application developed to showcase the project's essence and provide a digital platform where visitors can explore its concept and connect with the artist. 
 
