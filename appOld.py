@@ -6,21 +6,26 @@ from forms import ContactForm
 from flask_mail import Mail, Message
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from flask_session import Session
-# from flask_socketio import SocketIO
-# from watchdog.observers import Observer
-# from watchdog.events import FileSystemEventHandler
+from flask_socketio import SocketIO
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
 
 
 from helpers import apology, login_required
 
 # Configure application
 app = Flask(__name__)
-# socketio = SocketIO(app)
+socketio = SocketIO(app)
 app.secret_key = 'revercs50'
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # Configuração do Flask-Mail
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -85,5 +90,21 @@ def admin_newsletter():
     return render_template('admin_newsletter.html', emails=emails)
 
 
+
+class ChangeHandler(FileSystemEventHandler):
+    def on_modified(self, event):
+        if event.src_path.endswith('.css') or event.src_path.endswith('.html') or event.src_path.endswith('.js'):
+            socketio.emit('file_changed')
+
+
+
+
 if __name__ == "__main__":
-    app.run(debug=False)
+    observer = Observer()
+    observer.schedule(ChangeHandler(), path='static', recursive=True)
+    observer.start()
+    try:
+        socketio.run(app, debug=True)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
